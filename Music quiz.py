@@ -26,5 +26,5 @@ auth() #Authenticate that user can play game
 
 ## Part 1 ^^^^^^^^^
 
-
-
+artist = open("artist.txt", "w")
+artist.write(["","","","","",""])
