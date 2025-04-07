@@ -1,65 +1,107 @@
 import random
-import ast
+import os
 
+score = 0
 username = None
 password = None
 
-def auth():#check if user is allowed to play game
-    username = input("enter username")
-    password = input("enter password")
+def auth():  # Check if user is allowed to play game
+    global username, password
+    username = input("Enter username: ")
+    password = input("Enter password: ")
 
-    if username == "Silviu":
-        if password == "Password":
-            return print("Welcome to the Music Quiz!")
-    elif username == "Nyphro":
-        if password == "Password":
-            return print("Welcome to the Music Quiz!")
+    if username == "Silviu" and password == "Password":
+        print("Welcome to the Music Quiz!")
+        return True
+    elif username == "Nyphro" and password == "Password":
+        print("Welcome to the Music Quiz!")
+        return True
     else:
         print("Access denied!")
+        return False
 
-auth() #Authenticate that user can play game
+if not auth():  # Authenticate that user can play game
+    exit()
 
-artists = ['Deftones', '$uicideboy$','BONES']
+artists = ['Deftones', '$uicideboy$', 'BONES']
 deftones_songs = ['Change', 'Rosemary', 'Mascara']
 suicideboys_songs = ['Antarctica', 'Paris', 'Coma']
 BONES_songs = ['HDMI', 'Sodium', 'Rocks']
 
-with open('deftones.txt', "w") as f: #write to file
+# Writing song lists to files
+with open('deftones.txt', 'w') as f:
     for item in deftones_songs:
         f.write(f"{item}\n")
 
-with open('suicideboys.txt', "w") as f: #write to file
+with open('suicideboys.txt', 'w') as f:
     for item in suicideboys_songs:
         f.write(f"{item}\n")
 
-with open('BONES.txt', 'w') as f: #write to file
+with open('BONES.txt', 'w') as f:
     for item in BONES_songs:
-        f.write(f"{item} \n")
+        f.write(f"{item}\n")
 
-with open("artist.txt", "w") as f: #write to file
+with open('artist.txt', 'w') as f:
     for item in artists:
         f.write(f"{item}\n")
 
-with open("artists.txt", "r") as f: #reads the list of artists
-    data = f.read()
+# Reading the list of artists
+with open("artist.txt", "r") as f:
+    artist_list = [line.strip() for line in f if line.strip()]
 
-artist_list = ast.literal_eval(data) #re arranges back into a list
-artist_random_guess = random.choice(artist_list) #pick one of the 3 artists
+artist_random = random.choice(artist_list) # pick an artist
 
-if artist_random_guess == "Deftones":
+if artist_random == "Deftones":
     with open('deftones.txt', "r") as f:
         song_list = [line.strip() for line in f if line.strip()]
         song_guess = random.choice(song_list)
-
-elif artist_random_guess == "$uicideboy$":
+elif artist_random == "$uicideboy$":
     with open('suicideboys.txt', "r") as f:
         song_list = [line.strip() for line in f if line.strip()]
         song_guess = random.choice(song_list)
-
-elif artist_random_guess == "BONES":
+elif artist_random == "BONES":
     with open('BONES.txt', "r") as f:
         song_list = [line.strip() for line in f if line.strip()]
         song_guess = random.choice(song_list)
 
-print(artist_random_guess)
-print(song_guess)
+song_first_letter = song_guess[0]
+
+#guess song
+guess = input(f"Guess thesong from {artist_random} - {song_first_letter}: ")
+
+# Check the first guess 
+if guess == song_guess:
+    score += 2
+    print(f"Correct!")
+else:
+    guess = input(f"Try again!\n")
+    if guess == song_guess:
+        score += 1
+        print(f"Correct!")
+    else:
+        print(f"The correct answer was {artist_random} - {song_guess}.")
+        exit()
+
+print(f"Your final score is: {score}") #output score
+
+scores = []
+if os.path.exists('players_scores.txt'):
+    with open('players_scores.txt', 'r') as f:
+        for line in f:
+            name, score = line.strip().split(': ')
+            scores.append((name, int(score)))
+
+# append players score
+scores.append((username, score))
+
+# Sort the scores in descending order
+scores.sort(key=lambda x: x[1], reverse=True)
+
+# write scores to file
+with open('players_scores.txt', 'w') as f:
+    for name, score in scores:
+        f.write(f"{name}: {score}\n")
+
+print("\nTop 5 Players:") #display top 5 players
+for i, (name, score) in enumerate(scores[:5]):
+    print(f"{i + 1}. {name} - {score}")
