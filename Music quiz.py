@@ -4,20 +4,28 @@ import os
 score = 0
 Name = None
 Password = None
-auth = 0
 
 def login():
     Name = input("Enter username")
     Password = input("Enter Password")
-    with open('database.txt', 'r') as f:
-        lines = readlines()
-        for line in lines with f:
-            if line.find("{Name}:{Password}") != (f"{Name}:{Password}):
-                line = line - 1
-            elif line.find("{Name}:{Password}") == (f"{Name}:{Password}):
-                return auth = 1
-            else: kill()
-
+    auth = 0
+    
+    try:
+        with open('database.txt', 'r') as f:
+            lines = f.readlines()
+            for line in lines:
+                if line.strip() = f"{Name}:{Password}:
+                    auth = 1
+                    break
+        except FileNotFoundError:
+            print("Account not found")
+            return False
+            
+        if auth:
+            return True
+        else:
+            return False 
+            
 def signup():
     Name = input("Enter username")
     Password = input("Enter password")
