@@ -2,39 +2,43 @@ import random
 import os
 
 score = 0
-Name = None
-Password = None
 
 def login():
-    Name = input("Enter username")
-    Password = input("Enter Password")
-    auth = 0
+    print("Log into your account!")
+    username = input("Enter username: ").strip()
+    password = input("Enter password: ").strip()
     
     try:
         with open('database.txt', 'r') as f:
             lines = f.readlines()
             for line in lines:
-                if line.strip() = f"{Name}:{Password}:
-                    auth = 1
-                    break
-        except FileNotFoundError:
-            print("Account not found")
-            return False
-            
-        if auth:
-            return True
-        else:
-            return False 
-            
-def signup():
-    Name = input("Enter username")
-    Password = input("Enter password")
-    with open('database.txt', 'a') as f:
-        f.weite(f"{Name}:{Password}\n")
-    login()
+                if line.strip() == f"{username}:{password}":
+                    print("Logged in!\n")
+                    return username
+    except FileNotFoundError:
+        print("Account not found.")
+        exit()
 
+    print("Exiting...")
+    exit()
+
+def signup():
+    print("Make a new account!")
+    username = input("Enter username: ").strip()
+    password = input("Enter password: ").strip()
+    
+    with open('database.txt', 'a') as f:
+        f.write(f"{username}:{password}\n")
+    
+    print("Account created.\n")
+    return login()
 
 user_option = int(input("Choose an option:\n1. Sign up\n2. Sign in"))
+
+if user_option == 1:
+    username = signup()
+elif user_option == 2:
+    username = login()
 
 artists = ['Deftones', '$uicideboy$', 'BONES']
 deftones_songs = ['Change', 'Rosemary', 'Mascara']
@@ -101,8 +105,10 @@ scores = []
 if os.path.exists('players_scores.txt'):
     with open('players_scores.txt', 'r') as f:
         for line in f:
-            name, score = line.strip().split(': ')
-            scores.append((name, int(score)))
+            parts = line.strip().split(': ')
+            if len(parts) == 2 and parts[1].isdigit():
+                name, score_val = parts
+                scores.append((name, int(score_val)))
 
 # append players score
 scores.append((username, score))
