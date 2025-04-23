@@ -2,26 +2,31 @@ import random
 import os
 
 score = 0
-username = None
-password = None
+Name = None
+Password = None
+auth = 0
 
-def auth():  # Check if user is allowed to play game
-    global username, password
-    username = input("Enter username: ")
-    password = input("Enter password: ")
+def login():
+    Name = input("Enter username")
+    Password = input("Enter Password")
+    with open('database.txt', 'r') as f:
+        lines = readlines()
+        for line in lines with f:
+            if line.find("{Name}:{Password}") != (f"{Name}:{Password}):
+                line = line - 1
+            elif line.find("{Name}:{Password}") == (f"{Name}:{Password}):
+                return auth = 1
+            else: kill()
 
-    if username == "Silviu" and password == "Password":
-        print("Welcome to the Music Quiz!")
-        return True
-    elif username == "Nyphro" and password == "Password":
-        print("Welcome to the Music Quiz!")
-        return True
-    else:
-        print("Access denied!")
-        return False
+def signup():
+    Name = input("Enter username")
+    Password = input("Enter password")
+    with open('database.txt', 'a') as f:
+        f.append(f"{Name}:{Password}\n")
+    login():
 
-if not auth():  # Authenticate that user can play game
-    exit()
+
+user_option = int(input("Choose an option:\n1. Sign up\n2. Sign in"))
 
 artists = ['Deftones', '$uicideboy$', 'BONES']
 deftones_songs = ['Change', 'Rosemary', 'Mascara']
