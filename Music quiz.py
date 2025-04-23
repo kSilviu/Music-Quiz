@@ -30,8 +30,8 @@ def signup():
     Name = input("Enter username")
     Password = input("Enter password")
     with open('database.txt', 'a') as f:
-        f.append(f"{Name}:{Password}\n")
-    login():
+        f.weite(f"{Name}:{Password}\n")
+    login()
 
 
 user_option = int(input("Choose an option:\n1. Sign up\n2. Sign in"))
