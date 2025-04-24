@@ -2,6 +2,7 @@ import random
 import os
 
 score = 0
+admin_pass = Parola22!
 
 def login():
     print("Log into your account!")
@@ -121,6 +122,6 @@ with open('players_scores.txt', 'w') as f:
     for name, score in scores:
         f.write(f"{name}: {score}\n")
 
-print("\nTop 5 Players:") #display top 5 players
+("\nTop 5 Players:") #display top 5 players
 for i, (name, score) in enumerate(scores[:5]):
     print(f"{i + 1}. {name} - {score}")
