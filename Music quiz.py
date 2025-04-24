@@ -1,28 +1,60 @@
 import random
 import os
 
-score = 0
 admin_pass = 'Parola22!'
 play_amount = 1
 end_option = 0
 
+
 def add_song():
-    new_artist = input("Enter the artists name.")
-    with open('artists.txt', 'a') as f:
-        f.write(new_artist)
+    new_artist = input("Enter the artist's name: ").strip()
+    
+    # Check if the artist already exists
+    with open('artist.txt', 'r') as f:
+        existing_artists = [line.strip() for line in f]
+    
+    if new_artist in existing_artists:
+        print(f"Artist {new_artist} already exists.")
+        return
+    
+    with open('artist.txt', 'a') as f:
+        f.write(new_artist + '\n')
+    
+    try:
+        num_songs = int(input("How many songs do you want to add?"))
+    except ValueError:
+        print("Enter a valid number")
+        return
+    
+    songs = []
+    for i in range(num_songs):
+        song = input(f"Enter song {i + 1}: ").strip()
+        songs.append(song)
+    
+    filename = f"{new_artist.lower().replace(' ', '')}.txt"
+    with open(filename, 'w') as f:
+        for song in songs:
+            f.write(song + '\n')
+
+    print(f"{new_artist} and their songs have successfully been added to the database.")
 
 def end():
-    end_option = int(input("What do you wish to do:\n1. Play again.\n2. Display the top 5 players. (Admin only)\n3. Add a new artist and songs."))
-    return end_option
+    while True:
+        try:
+            choice = int(input("Choose one of the following:\n1. Play again\n2. Display the top 5 players (Admin only)\n3. Add a new artist (Admin only)\n4. Quit"))
+            if choice in [1,2,3,4]:
+                return choice
+            else:
+                print("Choose a valid choice")
+        except ValueError:
+            print("Please enter a number")
+                
 
-def top_five_scores():
+def top_five_scores(scores):
     print("\nTop 5 Players:") #display top 5 players
     for i, (name, score) in enumerate(scores[:5]):
         print(f"{i + 1}. {name} - {score}")
         
-def play_again():
-    play_amount = 1
-
 def login():
     print("Log into your account!")
     username = input("Enter username: ").strip()
@@ -62,65 +94,60 @@ if user_option == 1:
 elif user_option == 2:
     username = login()
 
-artists = ['Deftones', '$uicideboy$', 'BONES']
 deftones_songs = ['Change', 'Rosemary', 'Mascara']
 suicideboys_songs = ['Antarctica', 'Paris', 'Coma']
 BONES_songs = ['HDMI', 'Sodium', 'Rocks']
 
-# Writing song lists to files
-with open('deftones.txt', 'w') as f:
-    for item in deftones_songs:
-        f.write(f"{item}\n")
-
-with open('suicideboys.txt', 'w') as f:
-    for item in suicideboys_songs:
-        f.write(f"{item}\n")
-
-with open('BONES.txt', 'w') as f:
-    for item in BONES_songs:
-        f.write(f"{item}\n")
-
-with open('artist.txt', 'w') as f:
-    for item in artists:
-        f.write(f"{item}\n")
+if not os.path.exists('artist.txt'):
+    artists = ['Deftones', '$uicideboy$', 'BONES']
+    with open('artist.txt', 'w') as f:
+        for item in artists:
+            f.write(f"{item}\n")
+    
+    song_data = {
+        'deftones.txt': ['Change', 'Rosemary', 'Mascara'],
+        'suicideboys.txt': ['Antarctica', 'Paris', 'Coma'],
+        'bones.txt': ['HDMI', 'Sodium', 'Rocks']
+    }
+    for filename, songs in song_data.items():
+        with open(filename, 'w') as f:
+            for song in songs:
+                f.write(f"{song}\n")
 
 # Reading the list of artists
-while play_amount == 1: 
+while play_amount == 1:
+    score = 0
     with open("artist.txt", "r") as f:
         artist_list = [line.strip() for line in f if line.strip()]
 
     artist_random = random.choice(artist_list) # pick an artist
 
-    if artist_random == "Deftones":
-        with open('deftones.txt', "r") as f:
+    filename = f"{artist_random.lower().replace(' ', '')}.txt"
+            
+    if os.path.exists(filename):
+        with open(filename, "r") as f:
             song_list = [line.strip() for line in f if line.strip()]
             song_guess = random.choice(song_list)
-    elif artist_random == "$uicideboy$":
-        with open('suicideboys.txt', "r") as f:
-            song_list = [line.strip() for line in f if line.strip()]
-            song_guess = random.choice(song_list)
-    elif artist_random == "BONES":
-        with open('BONES.txt', "r") as f:
-            song_list = [line.strip() for line in f if line.strip()]
-            song_guess = random.choice(song_list)
+    else:
+        print(f"No song file found for {artist_random}. Skipping...")
+        continue
 
     song_first_letter = song_guess[0]
 
 #guess song
-    guess = input(f"Guess the fsong from {artist_random} - {song_first_letter}: ")
+    guess = input(f"Guess the song from {artist_random} - {song_first_letter}: ")
 
 # Check the first guess 
-    if guess == song_guess:
+    if guess.strip().lower() == song_guess.lower():
         score += 2
         print(f"Correct!")
     else:
-         guess = input("Try again!\n")
-        if guess == song_guess:
+        guess = input("Try again!\n")
+        if guess.strip().lower() == song_guess.lower():
             score += 1
             print(f"Correct!")
         else:
             print(f"The correct answer was {artist_random} - {song_guess}.")
-            exit()
 
     print(f"Your final score is: {score}") #output score
 
@@ -141,17 +168,29 @@ while play_amount == 1:
 
 # write scores to file
     with open('players_scores.txt', 'w') as f:
-        for name, score in scores:
-            f.write(f"{name}: {score}\n")
-
-    end()
+        for name, score_val in scores:
+            f.write(f"{name}: {score_val}\n")
 
     end_option = end()
-    
+
     if end_option == 1:
         continue
     elif end_option == 2:
         admin_pass_input = input("Enter the Admin password:\n")
         if admin_pass_input != admin_pass:
             print("Access denied!")
-            play_amount = 0
+        else:
+            top_five_scores(scores)
+            exit()
+    elif end_option == 3:
+        admin_pass_input = input("Enter the Admin password:\n")
+        if admin_pass_input != admin_pass:
+            print("Access denied!")
+        elif admin_pass_input == admin_pass:
+            add_song()
+            exit()
+        else:
+            exit()
+    elif end_option == 4:
+        print("Exiting...")
+        exit()
