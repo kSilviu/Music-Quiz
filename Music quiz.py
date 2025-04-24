@@ -23,7 +23,7 @@ def top_five_scores():
 def play_again():
     play_amount = 1
 
-def login(play_amount):
+def login():
     print("Log into your account!")
     username = input("Enter username: ").strip()
     password = input("Enter password: ").strip()
@@ -107,7 +107,7 @@ while play_amount == 1:
     song_first_letter = song_guess[0]
 
 #guess song
-    guess = input(f"Guess thesong from {artist_random} - {song_first_letter}: ")
+    guess = input(f"Guess the fsong from {artist_random} - {song_first_letter}: ")
 
 # Check the first guess 
     if guess == song_guess:
@@ -115,7 +115,7 @@ while play_amount == 1:
         print(f"Correct!")
     else:
          guess = input(f"Try again!\n")
-    if guess == song_guess:
+        if guess == song_guess:
         score += 1
         print(f"Correct!")
     else:
@@ -147,7 +147,7 @@ while play_amount == 1:
     end()
     
     if end_option == 1:
-        play_amount = 1
+        login()
     elif end_option == 2:
         admin_pass_input = input("Enter the Admin password:\n")
         if admin_pass_input != admin_pass:
