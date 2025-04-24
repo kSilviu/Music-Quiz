@@ -7,16 +7,16 @@ play_amount = 1
 end_option = 0
 
 def add_song():
-    new_artist == input("Enter the artists name.")
+    new_artist = input("Enter the artists name.")
     with open('artists.txt', 'a') as f:
-        f.append(new_artist)
+        f.write(new_artist)
 
 def end():
     end_option = int(input("What do you wish to do:\n1. Play again.\n2. Display the top 5 players. (Admin only)\n3. Add a new artist and songs."))
     return end_option
 
 def top_five_scores():
-    ("\nTop 5 Players:") #display top 5 players
+    print("\nTop 5 Players:") #display top 5 players
     for i, (name, score) in enumerate(scores[:5]):
         print(f"{i + 1}. {name} - {score}")
         
@@ -114,13 +114,13 @@ while play_amount == 1:
         score += 2
         print(f"Correct!")
     else:
-         guess = input(f"Try again!\n")
+         guess = input("Try again!\n")
         if guess == song_guess:
-        score += 1
-        print(f"Correct!")
-    else:
-        print(f"The correct answer was {artist_random} - {song_guess}.")
-        exit()
+            score += 1
+            print(f"Correct!")
+        else:
+            print(f"The correct answer was {artist_random} - {song_guess}.")
+            exit()
 
     print(f"Your final score is: {score}") #output score
 
@@ -145,9 +145,11 @@ while play_amount == 1:
             f.write(f"{name}: {score}\n")
 
     end()
+
+    end_option = end()
     
     if end_option == 1:
-        login()
+        continue
     elif end_option == 2:
         admin_pass_input = input("Enter the Admin password:\n")
         if admin_pass_input != admin_pass:
