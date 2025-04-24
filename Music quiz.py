@@ -11,7 +11,7 @@ def top_five_scores():
         print(f"{i + 1}. {name} - {score}")
         
 def play_again():
-    auth = 1
+    play_amount = 1
 
 def login(play_amount):
     print("Log into your account!")
@@ -24,7 +24,8 @@ def login(play_amount):
             for line in lines:
                 if line.strip() == f"{username}:{password}":
                     print("Logged in!\n")
-                    return username
+                    return username, play_amount = 1
+                
                     
     except FileNotFoundError:
         print("Account not found.")
