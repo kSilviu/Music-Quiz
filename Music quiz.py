@@ -3,7 +3,17 @@ import os
 
 score = 0
 admin_pass = 'Parola22!'
-play_amount = 0
+play_amount = 1
+end_option = 0
+
+def add_song():
+    new_artist == input("Enter the artists name.")
+    with open('artists.txt', 'a') as f:
+        f.append(new_artist)
+
+def end():
+    end_option = int(input("What do you wish to do:\n1. Play again.\n2. Display the top 5 players. (Admin only)\n3. Add a new artist and songs."))
+    return end_option
 
 def top_five_scores():
     ("\nTop 5 Players:") #display top 5 players
@@ -24,7 +34,7 @@ def login(play_amount):
             for line in lines:
                 if line.strip() == f"{username}:{password}":
                     print("Logged in!\n")
-                    return username, play_amount = 1
+                    return username
                 
                     
     except FileNotFoundError:
@@ -134,18 +144,7 @@ while play_amount == 1:
         for name, score in scores:
             f.write(f"{name}: {score}\n")
 
-    end_option = 0
-        
-def end():
-    end_option = int(input("What do you wish to do:\n1. Play again.\n2. Display the top 5 players. (Admin only)\n3. Add a new artist and songs."))
-    return end_option
-
     end()
-
-def add_song():
-    new_artist == input("Enter the artists name.")
-    with open('artists.txt', 'a') as f:
-        f.append(new_artist)
     
     if end_option == 1:
         play_amount = 1
@@ -154,6 +153,3 @@ def add_song():
         if admin_pass_input != admin_pass:
             print("Access denied!")
             play_amount = 0
-    if end_option == 3:
-        add_song()
-        play_amount = 0
