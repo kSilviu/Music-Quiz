@@ -17,7 +17,7 @@ def add_song():
         print(f"Artist {new_artist} already exists.")
         return
     
-    with open('artist.txt', 'a') as f:
+    with open('artist.txt', 'a+') as f:
         f.write(new_artist + '\n')
     
     try:
