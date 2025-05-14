@@ -1,3 +1,3 @@
-Hello, this was made for my OCR Computer Science GCSE project. Although me being in year 10 I have been coding for a little bit longer than my peers. This code that I have made in year 10 just goes to show...
+Hello, this was made for my OCR Computer Science GCSE project.
 
 Please do NOT use this in your python project if you are doing the same exact project. Your work WILL get plagerised by your teacher.
