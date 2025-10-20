@@ -97,14 +97,13 @@ elif user_option == 2:
 
 # sets data up if it doesnt alr exist
 if not os.path.exists('artist.txt'):
-    artists = ['Deftones', 'suicideboys', 'BONES']
+    artists = ['Deftones', 'BONES']
     with open('artist.txt', 'w') as f:
         for item in artists:
             f.write(f"{item}\n")
 
     song_data = {
         'deftones.txt': ['Change', 'Rosemary', 'Mascara'],
-        'suicideboys.txt': ['Antarctica', 'Paris', 'Coma'],
         'bones.txt': ['HDMI', 'Sodium', 'Rocks']
     }
 
@@ -190,4 +189,3 @@ while play_amount == 1:
     elif end_option == 4:
         print("Exiting...")
         break
-
